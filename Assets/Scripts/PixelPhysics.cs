@@ -48,37 +48,4 @@ public static class PixelPhysics
             texture.Apply();
         }
     }
-
-    // public static void UpdatePolygonCollider(Sprite sprite, PolygonCollider2D polygonCollider)
-    // {
-    //     List<Vector2[]> points = ExtractPathFromTexture(sprite);
-
-    //     polygonCollider.pathCount = points.Count;
-
-    //     for (int i = 0; i < points.Count; i++) {
-    //         polygonCollider.SetPath(i, points[i]);
-    //     }
-    // }
-
-    /// <summary>
-    /// 提取非透明像素的轮廓路径
-    /// </summary>
-    /// <param name="texture"></param>
-    /// <returns></returns>
-    // public static List<Vector2[]> ExtractPathFromTexture(Sprite sprite)
-    // {
-    //     List<Vector2[]> points = new();
-
-    //     // TODO 暂时使用Sprite的轮廓
-    //     // Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100);
-
-    //     for (int i = 0; i < sprite.GetPhysicsShapeCount(); i++) {
-    //         List<Vector2> path = new();
-    //         sprite.GetPhysicsShape(i, path);
-    //         points.Add(path.ToArray());
-    //     }
-
-    //     return points;
-    // }
-
 }
