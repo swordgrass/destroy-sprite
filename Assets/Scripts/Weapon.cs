@@ -6,14 +6,27 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
-    public Texture2D weaponMask;
-    public Vector2 destroyScale;
-    public Vector2 destroyOffset;
+    public SpriteRenderer destroySpriteRenderer;
 
-    private void Start() {
-        weaponMask = spriteRenderer.sprite.texture;
+    public Stack<GameObject> pool;
 
-        Transform maskTrans = spriteRenderer.transform;
-        destroyScale = maskTrans.lossyScale;
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Planet"))
+        {
+            other.gameObject.GetComponent<Planet>().TakeDamage(destroySpriteRenderer);
+            gameObject.SetActive(false);
+
+            pool.Push(gameObject);
+        }
+    }
+
+    private void Update() {
+        Vector2 targetPosition = Game.instance.planet.transform.position;
+        transform.SetPositionAndRotation(Vector2.MoveTowards(transform.position, targetPosition, 2f * Time.deltaTime), Quaternion.FromToRotation(Vector2.right, targetPosition - (Vector2)transform.position));
+        if (Vector2.Distance(transform.position, targetPosition) < 0.001f)
+        {
+            gameObject.SetActive(false);
+            pool.Push(gameObject);
+        }
     }
 }

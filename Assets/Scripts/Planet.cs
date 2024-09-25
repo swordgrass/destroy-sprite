@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Plant : MonoBehaviour
+public class Planet : MonoBehaviour
 {
-    public SpriteRenderer weaponRenderer;
     [HideInInspector]
     public Texture2D originalTexture;
     [HideInInspector]
@@ -28,23 +27,25 @@ public class Plant : MonoBehaviour
         // 转sprite
         spriteRenderer.sprite = Sprite.Create(currentTexture, new Rect(0, 0, currentTexture.width, currentTexture.height), new Vector2(0.5f, 0.5f));
     }
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 hitPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            weaponRenderer.transform.position = hitPoint;
-            PixelPhysics.DestroyByMask(currentTexture, spriteRenderer, weaponRenderer);
-            // PixelPhysics.UpdatePolygonCollider(spriteRenderer.sprite, GetComponent<PolygonCollider2D>());
-            Destroy(GetComponent<PolygonCollider2D>());
-            gameObject.AddComponent<PolygonCollider2D>();
 
-            // 检查是否需要分裂
-            if (CheckDetach())
-            {
-                Split();
-            }
-        }
+    private void Update() {
+        // 旋转
+        transform.Rotate(Vector3.forward, 10 * Time.deltaTime);
+    }
+
+    public void TakeDamage(SpriteRenderer weaponRenderer) {
+        PixelPhysics.DestroyByMask(currentTexture, spriteRenderer, weaponRenderer);
+        // PixelPhysics.UpdatePolygonCollider(spriteRenderer.sprite, GetComponent<PolygonCollider2D>());
+        var rigid = GetComponent<PolygonCollider2D>();
+        rigid.enabled = false;
+        Destroy(rigid);
+        gameObject.AddComponent<PolygonCollider2D>();
+
+        // 检查是否需要分裂
+        // if (CheckDetach())
+        // {
+        //     Split();
+        // }
     }
 
     // 检查是否需要分裂
